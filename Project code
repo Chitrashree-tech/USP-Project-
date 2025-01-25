@@ -1,0 +1,89 @@
+# Data files
+
+EMP_FILE="emp.lst"
+
+DEPT_FILE="dept.lst"
+
+# Ensure the data files exist
+
+touch $EMP_FILE $DEPT_FILE
+
+# Function: Display Main Menu
+
+main_menu() {
+
+ while true; do
+
+ CHOICE=$(dialog --clear --backtitle "Employee & Department Management System" \
+
+ --title "Main Menu" \
+
+ --menu "Choose an action:" 20 60 9 \
+
+ 1 "Add Employee" \
+
+ 2 "Add Department" \
+
+ 3 "View Employee Records" \
+
+ 4 "View Department Details" \
+
+ 5 "Search Employee Records" \
+
+ 6 "Update Employee Details" \
+
+ 7 "Delete Employee" \
+
+ 8 "Generate Reports" \
+
+ 9 "Exit" \
+
+ 3>&1 1>&2 2>&3)
+
+ case $CHOICE in
+
+ 1) add_employee ;;
+
+ 2) add_department ;;
+
+ 3) view_records ;;
+
+ 4) view_departments ;;
+
+ 5) search_records ;;
+
+ 6) update_employee ;;
+
+ 7) delete_employee ;;
+
+ 8) generate_reports ;;
+
+ 9) dialog --msgbox "Exiting the system. Goodbye!" 10 30 ; clear ; exit 0 ;;
+
+ *) dialog --msgbox "Invalid choice!" 10 30 ;;
+
+ esac
+
+ done
+
+}
+
+# Function: Add Employee
+
+add_employee() {
+
+ emp_id=$(dialog --inputbox "Enter Employee ID:" 10 40 3>&1 1>&2 2>&3)
+
+ name=$(dialog --inputbox "Enter Employee Name:" 10 40 3>&1 1>&2 2>&3)
+
+ dept=$(dialog --inputbox "Enter Department:" 10 40 3>&1 1>&2 2>&3)
+
+ salary=$(dialog --inputbox "Enter Salary:" 10 40 3>&1 1>&2 2>&3)
+
+ if [[ -n $emp_id && -n $name && -n $dept && -n $salary ]]; then
+
+ echo "$emp_id|$name|$dept|$salary" >> $EMP_FILE
+
+ dialog --msgbox "Employee added successfully!" 10 30
+
+ else
